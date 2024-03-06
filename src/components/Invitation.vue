@@ -1,16 +1,16 @@
 <template>
     <div class="container">
         <el-form ref="form" class="form" label-position="top">
-            <h1 class="form-header">加入组织</h1> <!-- 标题直接放置在el-form中，便于居中 -->
+            <h1 class="form-header">加入Github组织</h1> <!-- 标题直接放置在el-form中，便于居中 -->
             <el-form-item>
                 <el-input v-model="invitees" placeholder="邮箱或用户名"></el-input>
             </el-form-item>
             <div class="button-group">
-                <el-button type="primary" @click="submitForm">申请加入</el-button>
-                <el-button style="background-color: #1f9bcf; color: white;" @click="goToGithub">接受邀请</el-button>
+                <el-button type="primary" @click="apply">申请加入</el-button>
+                <el-button style="background-color: #1f9bcf; color: white;" @click="accept">接受邀请</el-button>
             </div>
             <div class="form-footer">
-                未经过长期测试，可能存在封号风险，建议使用小号加入
+                未经过长期测试，可能存在封号风险，强烈建议使用小号加入体验
             </div>
         </el-form>
     </div>
@@ -30,7 +30,7 @@ export default {
         const invitees = ref('');
         const url = ref('');
 
-        const submitForm = async () => {
+        const apply = async () => {
             // 判断invitees是否为空
             if (invitees.value.trim() === '') {
                 // 如果为空，则弹出提示消息
@@ -41,10 +41,9 @@ export default {
                 });
             } else {
                 try {
-                    console.log(invitees.value)
-                    const response = await axios.get(`https://github-organization-invitation.lemonzuo.org/api/inviteUser?invitees=${invitees.value}`);
-                    console.log(response.data);
+                    const response = await axios.get(`https://github-organization-invitation.lemonzuo.org/api/inviteUser?invitees=${encodeURIComponent(invitees.value)}`);
                     let res = response.data;
+                    console.log(res);
                     if (res.code === -1) {
                         // 失败
                         ElMessage({
@@ -75,7 +74,7 @@ export default {
             }
         };
 
-        const goToGithub = () => {
+        const accept = () => {
             if (url.value) {
                 window.open(url.value, '_blank').focus()
             } else {
@@ -87,13 +86,12 @@ export default {
             }
             // 跳转完清空
             url.value = '';
-
         }
 
         return {
             invitees,
-            submitForm,
-            goToGithub
+            apply,
+            accept
         }
     }
 }
