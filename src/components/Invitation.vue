@@ -10,7 +10,8 @@
                 <el-button style="background-color: #1f9bcf; color: white;" @click="accept">接受邀请</el-button>
             </div>
             <div class="form-footer">
-                未经过长期测试，可能存在封号风险，强烈建议使用小号加入体验
+                未经过长期测试，可能存在封号风险
+                <p style="font-size: 16px;font-weight: bold;">禁止使用大号加入</p>
             </div>
         </el-form>
     </div>
